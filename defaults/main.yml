@@ -1,0 +1,10 @@
+---
+ludus_user_name: "analyst"
+ludus_user_password: "analyst"
+ignore_chocolatey_checksums: true
+
+# List of detection tool repositories to clone (optional)
+# detect_repos:
+#   - "https://github.com/example/detection-rules.git"
+#   - "https://github.com/example/yara-rules.git"
+detect_repos: []

@@ -1,0 +1,44 @@
+---
+#- name: System preparation
+#  include_tasks: prepare.yml
+
+#- name: Install Chocolatey tooling
+#  include_tasks: install_choco.yml
+#  args:
+#    apply:
+#      become: yes 
+#      become_method: runas 
+#      become_user: "{{ ludus_user_name }}"
+
+- name: Install other tooling
+  include_tasks: install_others.yml
+  args:
+    apply:
+      become: yes 
+      become_method: runas 
+      become_user: "{{ ludus_user_name }}"
+
+- name: Setup shortcuts
+  include_tasks: setup_shortcuts.yml
+  args:
+    apply:
+      become: yes 
+      become_method: runas 
+      become_user: "{{ ludus_user_name }}"
+
+- name: User customization
+  include_tasks: user.yml
+  args:
+    apply:
+      become: yes 
+      become_method: runas 
+      become_user: "{{ ludus_user_name }}"
+
+- name: Copy the INSTALLED.txt file onto the system
+  win_copy:
+    src: ../files/INSTALLED.txt
+    dest: 'C:\Tools\INSTALLED.txt'
+
+- name: Reboot
+  ansible.windows.win_reboot:
+    reboot_timeout: 300

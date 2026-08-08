@@ -1,0 +1,38 @@
+List of installed chocolatey packages:
+- vscode
+- git
+- 7zip
+- python3
+- sysinternals
+- osquery
+- exiftool
+- pebear
+- pestudio
+- pesieve
+- die 
+- explorersuite
+- capa 
+- upx
+- ida-free
+- ghidra
+- malcat
+- dnspy
+- cyberchef
+- hxd
+- vbindiff
+- volatility
+- processhacker
+- reshack
+- apimonitor
+- regshot
+- x64dbg.portable
+- x32dbg.portable
+
+Additional tools installed via other methods:
+- YARA (installed via yara.bat script)
+- Sysmon (downloaded and installed via PowerShell)
+- Hunt-Sleeping-Beacons (git clone)
+- injdrv (git clone)
+- SilkETW (git clone)
+- ThreatCheck (git clone)
+- ConfuserEx (extracted from ZIP file)

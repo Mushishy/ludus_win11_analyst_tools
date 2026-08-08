@@ -1,0 +1,75 @@
+---
+- name: Purge detection directories
+  ansible.windows.win_powershell:
+    script: |
+      if (Test-Path "C:\Tools\Detect\*") { Get-ChildItem "C:\Tools\Detect\*" | Where-Object { $_.Name -ine "yara" } | Remove-Item -Recurse -Force }
+      if (Test-Path "C:\Tools\Detect\yara\*") { Remove-Item "C:\Tools\Detect\yara\*" -Recurse -Force }
+
+- name: Install detect tools (git)
+  win_command: |
+    git clone {{ item }}
+  args:
+    chdir: "C:\\Tools\\Detect"
+  loop: "{{ detect_repos | default([]) }}"
+  when: detect_repos is defined and detect_repos | length > 0
+
+- name: Copying the YARA install script
+  win_copy:
+    src: ../files/yara.bat
+    dest: 'C:\Tools\Detect\yara\yara.bat'
+
+- name: Install YARA and YARA detection rules
+  win_shell: C:\Tools\Detect\yara\yara.bat . install
+  args:
+    chdir: "C:\\Tools\\Detect\\yara"
+
+- name: Install sysmon
+  ansible.windows.win_powershell:
+    script: |
+      Invoke-WebRequest https://download.sysinternals.com/files/Sysmon.zip -OutFile C:\Windows\Temp\Deployment\sysmon.zip
+      Expand-Archive C:\Windows\Temp\Deployment\sysmon.zip sysmon
+      Invoke-WebRequest https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/refs/heads/master/sysmonconfig-export.xml -OutFile C:\Tools\Detect\sysmon\sysmon-swiftonsecurity.xml
+    chdir: "C:\\Tools\\Detect"
+
+- name: Copy ConfuserEx2.zip to C:\Tools\RE
+  ansible.windows.win_copy:
+    src: ../files/tools/ConfuserEx2.zip
+    dest: C:\\Tools\\RE\\ConfuserEx2.zip
+
+- name: Unzip ConfuserEx2.zip
+  community.windows.win_unzip:
+    src: C:\\Tools\\RE\\ConfuserEx2.zip
+    dest: C:\\Tools\\RE\\ConfuserEx2\\
+    remote_src: yes
+
+- name: Remove ConfuserEx2.zip after extraction
+  ansible.windows.win_file:
+    path: C:\\Tools\\RE\\ConfuserEx2.zip
+    state: absent
+
+- name: Copy EVTX.zip to C:\Tools\Others  
+  ansible.windows.win_copy:
+    src: ../files/tools/EVTX.zip
+    dest: C:\\Tools\\Others\\EVTX.zip
+
+- name: Unzip EVTX.zip
+  community.windows.win_unzip:
+    src: C:\\Tools\\Others\\EVTX.zip
+    dest: C:\\Tools\\Others\\EVTX\\
+    remote_src: yes
+
+- name: Remove EVTX.zip after extraction
+  ansible.windows.win_file:
+    path: C:\\Tools\\Others\\EVTX.zip
+    state: absent
+
+- name: Create Desktop analyse folder
+  ansible.windows.win_file:
+    path: C:\\Users\\{{ ansible_user_id }}\\Desktop\\analyse
+    state: directory
+
+- name: Copy analyse folder contents to Desktop
+  ansible.windows.win_copy:
+    src: ../files/analyse/
+    dest: C:\\Users\\{{ ansible_user_id }}\\Desktop\\analyse\\
+    remote_src: no

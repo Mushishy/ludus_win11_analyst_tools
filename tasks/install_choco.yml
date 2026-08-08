@@ -1,0 +1,46 @@
+---
+- name: Install chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name:
+      - chocolatey
+
+- name: Install chocolatey packages
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ choco_package }}"
+    state: present
+    source: "{{ chocolatey_source | default('') }}"
+    ignore_checksums: "{{ true if ignore_chocolatey_checksums is defined and ignore_chocolatey_checksums else false }}"
+  with_items:
+    - vscode
+    - git
+    - 7zip
+    - python3
+    - sysinternals
+    - osquery
+    - exiftool
+    - pebear
+    - pestudio
+    - pesieve
+    - die 
+    - explorersuite
+    - capa 
+    - upx
+    - ida-free
+    - ghidra
+    - dnspy
+    - cyberchef
+    - hxd
+    - volatility
+    - processhacker
+    - reshack
+    - regshot
+    - x64dbg.portable
+    - apimonitor    
+    #- javadecompiler-gui
+    #- apktool
+    #- threadtear-gui
+    #- malcat 
+    #- vbindiff  
+    
+  loop_control:
+    loop_var: choco_package

@@ -1,0 +1,26 @@
+---
+- name: Modify quick access pins
+  ansible.windows.win_powershell:
+    script: |
+      $shell = New-Object -ComObject shell.application
+      $shell.Namespace("C:\Tools").Self.InvokeVerb(“pintohome”)
+      $shell.Namespace("C:\Payloads").Self.InvokeVerb(“pintohome”)
+
+- name: Modify the taskbar
+  ansible.windows.win_powershell:
+    script: |
+      function Unpin-App([string]$appname) {
+        ((New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items() |
+        ?{$_.Name -eq $appname}).Verbs() | ?{$_.Name.replace('&','') -match 'Unpin from taskbar'} | %{$_.DoIt()}
+      }
+      try{Unpin-App("Microsoft Store")}catch{}
+
+- name: Modify registry to use the old context menu from Windows 10
+  win_command: |
+    reg.exe add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
+
+- name: Remove all .lnk files from the Desktop
+  ansible.windows.win_powershell:
+    script: |
+      Remove-Item "C:\Users\{{ ludus_user_name }}\Desktop\*.lnk" -ErrorAction SilentlyContinue
+      Remove-Item "C:\Users\Public\Desktop\*.lnk" -ErrorAction SilentlyContinue

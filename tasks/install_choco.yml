@@ -6,11 +6,11 @@
 
 - name: Install chocolatey packages
   chocolatey.chocolatey.win_chocolatey:
-    name: "{{ choco_package }}"
+    name: "{{ item }}"
     state: present
     source: "{{ chocolatey_source | default('') }}"
-    ignore_checksums: "{{ true if ignore_chocolatey_checksums is defined and ignore_chocolatey_checksums else false }}"
-  with_items:
+    ignore_checksums: true
+  loop:
     - vscode
     - git
     - 7zip
@@ -21,9 +21,9 @@
     - pebear
     - pestudio
     - pesieve
-    - die 
+    - die
     - explorersuite
-    - capa 
+    - capa
     - upx
     - ida-free
     - ghidra
@@ -35,12 +35,10 @@
     - reshack
     - regshot
     - x64dbg.portable
-    - apimonitor    
-    #- javadecompiler-gui
-    #- apktool
+    - apimonitor
+    - javadecompiler-gui
+    - apktool
     #- threadtear-gui
-    #- malcat 
-    #- vbindiff  
-    
-  loop_control:
-    loop_var: choco_package
+    #- malcat
+    #- vbindiff
+    - ffmpeg

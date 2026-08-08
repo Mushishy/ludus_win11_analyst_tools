@@ -1,42 +1,27 @@
 ---
-#- name: System preparation
-#  include_tasks: prepare.yml
+- name: System preparation
+  ansible.builtin.include_tasks:
+    file: prepare.yml
 
-#- name: Install Chocolatey tooling
-#  include_tasks: install_choco.yml
-#  args:
-#    apply:
-#      become: yes 
-#      become_method: runas 
-#      become_user: "{{ ludus_user_name }}"
+- name: Install Chocolatey tooling
+  ansible.builtin.include_tasks:
+    file: install_choco.yml
 
 - name: Install other tooling
-  include_tasks: install_others.yml
-  args:
-    apply:
-      become: yes 
-      become_method: runas 
-      become_user: "{{ ludus_user_name }}"
+  ansible.builtin.include_tasks:
+    file: install_others.yml
 
 - name: Setup shortcuts
-  include_tasks: setup_shortcuts.yml
-  args:
-    apply:
-      become: yes 
-      become_method: runas 
-      become_user: "{{ ludus_user_name }}"
+  ansible.builtin.include_tasks:
+    file: setup_shortcuts.yml
 
 - name: User customization
-  include_tasks: user.yml
-  args:
-    apply:
-      become: yes 
-      become_method: runas 
-      become_user: "{{ ludus_user_name }}"
+  ansible.builtin.include_tasks:
+    file: user.yml
 
 - name: Copy the INSTALLED.txt file onto the system
-  win_copy:
-    src: ../files/INSTALLED.txt
+  ansible.windows.win_copy:
+    src: "{{ role_path }}/files/INSTALLED.txt"
     dest: 'C:\Tools\INSTALLED.txt'
 
 - name: Reboot

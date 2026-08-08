@@ -1,7 +1,6 @@
 ---
 ludus_user_name: "analyst"
 ludus_user_password: "analyst"
-ignore_chocolatey_checksums: true
 
 # List of detection tool repositories to clone (optional)
 # detect_repos:

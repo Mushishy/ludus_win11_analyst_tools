@@ -3,8 +3,8 @@
   ansible.windows.win_powershell:
     script: |
       $shell = New-Object -ComObject shell.application
-      $shell.Namespace("C:\Tools").Self.InvokeVerb(“pintohome”)
-      $shell.Namespace("C:\Payloads").Self.InvokeVerb(“pintohome”)
+      $shell.Namespace("C:\Tools").Self.InvokeVerb("pintohome")
+      $shell.Namespace("C:\Payloads").Self.InvokeVerb("pintohome")
 
 - name: Modify the taskbar
   ansible.windows.win_powershell:
@@ -16,7 +16,7 @@
       try{Unpin-App("Microsoft Store")}catch{}
 
 - name: Modify registry to use the old context menu from Windows 10
-  win_command: |
+  ansible.windows.win_command: |
     reg.exe add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
 
 - name: Remove all .lnk files from the Desktop

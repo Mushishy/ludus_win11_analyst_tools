@@ -1,24 +1,25 @@
 ---
 - name: Create 'C:\Payloads', 'C:\Tools' and other directories
-  win_file:
-    path: "{{ directories }}"
+  ansible.windows.win_file:
+    path: "{{ item }}"
     state: directory
-  with_items:
-    - C:\Tools
-    - C:\Tools\Detect
-    - C:\Tools\Detect\yara
-    - C:\Tools\Others
-    - C:\Tools\RE
-  loop_control:
-    loop_var: directories
+  loop:
+    - C:\\Payloads
+    - C:\\Tools
+    - C:\\Tools\\Detect
+    - C:\\Tools\\Detect\\yara
+    - C:\\Tools\\Detect\\sysmon
+    - C:\\Tools\\Others
+    - C:\\Tools\\RE
+    - C:\\Windows\\Temp\\Deployment
 
-- name: Add the '{{ ludus_user_name }}' user
-  win_user:
+- name: Add the variable user
+  ansible.windows.win_user:
     name: "{{ ludus_user_name }}"
     password: "{{ ludus_user_password }}"
     description: "Operator user added with Ansible."
-    password_never_expires: yes
-    user_cannot_change_password: no
+    password_never_expires: true
+    user_cannot_change_password: false
     groups:
       - "Administrators"
       - "Remote Desktop Users"
@@ -46,36 +47,33 @@
     type: string
 
 - name: Disable Windows Updates
-  ansible.builtin.script:
-    cmd: disable_updates.ps1
+  ansible.builtin.script: "{{ role_path }}/files/disable_updates.ps1"
 
 #- name: Disable Defender 1
 #  ansible.windows.win_powershell:
 #    script: |
 #      Add-MpPreference -ExclusionPath 'C:\'
 
-#- name: Execute PowerShell script to check tamper protection status
-#  ansible.windows.win_shell: |
-#    (Get-MpComputerStatus).IsTamperProtected
-#  register: tamper_protection_result
+- name: Execute PowerShell script to check tamper protection status
+  ansible.windows.win_shell: |
+    (Get-MpComputerStatus).IsTamperProtected
+  register: tamper_protection_result
 
-#- name: Set fact based on tamper protection status
-#  ansible.builtin.set_fact:
-#    tamper_protection_enabled: "{{ true if 'True' in tamper_protection_result.stdout else false }}"
+- name: Set fact based on tamper protection status
+  ansible.builtin.set_fact:
+    tamper_protection_enabled: "{{ true if 'True' in tamper_protection_result.stdout else false }}"
 
 #- name: Disable Defender 2
-#  ansible.builtin.script:
-#    cmd: disable_defender.bat
+#  ansible.builtin.script: "{{ role_path }}/files/disable_defender.bat"
 #  register: disable_defender
 #  when: tamper_protection_enabled
 
-#- name: Reboot after disabling Defender
-#  ansible.windows.win_reboot:
-#  when: tamper_protection_enabled
+- name: Reboot after disabling Defender
+  ansible.windows.win_reboot:
+  when: tamper_protection_enabled
 
 - name: Run the debloat script
-  ansible.builtin.script:
-    cmd: debloat.ps1
+  ansible.builtin.script: "{{ role_path }}/files/debloat.ps1"
 
 - name: Reboot
   ansible.windows.win_reboot:

@@ -1,139 +1,127 @@
 ---
 # Tools\Detect shortcuts
 - name: Copy PeSieve into the detect directory
-  win_copy:
+  ansible.windows.win_copy:
     src: "C:\\ProgramData\\chocolatey\\lib\\pesieve\\tools\\pe-sieve.exe"
     dest: "C:\\Tools\\Detect\\pe-sieve.exe"
-    remote_src: yes
-    
-# Tools\RE shortcuts  
+    remote_src: true
+
+# Tools\RE shortcuts
 - name: Create 'capa' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\capa\tools\capa.exe
     dest: C:\Tools\RE\capa.lnk
     description: "Shortcut to the capa application"
-    directory: C:\ProgramData\chocolatey\lib\capa\tools\
 
 - name: Create 'dnSpy' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\dnspy\tools\dnSpy.exe
     dest: C:\Tools\RE\dnSpy.lnk
     description: "Shortcut to the dnspy application"
-    directory: C:\ProgramData\chocolatey\lib\dnspy\tools\
 
 - name: Create 'Ghidra' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\ghidra\tools\ghidra_12.0.1_PUBLIC\ghidraRun.bat
     dest: C:\Tools\RE\Ghidra.lnk
     description: "Shortcut to the ghidra tools directory"
-    directory: C:\ProgramData\chocolatey\lib\ghidra\tools\ghidra_12.0.1_PUBLIC
 
 - name: Create 'x32dbg' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\x64dbg.portable\tools\release\x32\x32dbg.exe
     dest: C:\Tools\RE\x32dbg.lnk
     description: "Shortcut to the x32dbg application"
-    directory: C:\ProgramData\chocolatey\lib\x64dbg.portable\tools\release\x32
 
 - name: Create 'x64dbg' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\x64dbg.portable\tools\release\x64\x64dbg.exe
     dest: C:\Tools\RE\x64dbg.lnk
     description: "Shortcut to the x64dbg application"
-    directory: C:\ProgramData\chocolatey\lib\x64dbg.portable\tools\release\x64
 
 - name: Create 'IDA64' shortcut
   win_shortcut:
     src: 'C:\Program Files\IDA Freeware 8.3\ida64.exe'
     dest: C:\Tools\RE\ida64.lnk
     description: "Shortcut to the IDA64 application"
-    directory: C:\Program Files\IDA Freeware 8.3\
-  ignore_errors: yes
-  # Ignore errors because the directory might change name in the future
+  ignore_errors: true
 
 # Tools\Others shortcuts
 - name: Create 'die' shortcut
   win_shortcut:
-    src: C:\ProgramData\chocolatey\lib\die\tools\die.exe
+    src: C:\ProgramData\chocolatey\bin\die.exe
     dest: C:\Tools\Others\die.lnk
     description: "Shortcut to die"
-    directory: C:\ProgramData\chocolatey\lib\die\tools
 
 - name: Copy Sysinternals into the directory
-  win_copy:
+  ansible.windows.win_copy:
     src: "C:\\ProgramData\\chocolatey\\lib\\sysinternals\\tools\\"
     dest: "C:\\Tools\\Others\\sysinternals\\"
-    remote_src: yes
+    remote_src: true
 
 - name: Create 'PE-Bear' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\pebear\tools\PE-bear.exe
     dest: C:\Tools\Others\PE-bear.lnk
     description: "Shortcut to PE-Bear"
-    directory: C:\ProgramData\chocolatey\lib\pebear\tools\
 
 - name: Create 'pestudio' shortcut
   win_shortcut:
     src: C:\ProgramData\chocolatey\lib\pestudio\tools\pestudio\pestudio.exe
     dest: C:\Tools\Others\pestudio.lnk
     description: "Shortcut to pestudio"
-    directory: C:\ProgramData\chocolatey\lib\pestudio\tools\pestudio
 
 - name: Create 'APIMonitor' shortcut
   win_shortcut:
     src: 'C:\ProgramData\chocolatey\lib\apimonitor\tools\API Monitor (rohitab.com)\apimonitor-x64.exe'
     dest: C:\Tools\Others\apimonitor-x64.lnk
     description: "Shortcut to apimonitor"
-    directory: 'C:\ProgramData\chocolatey\lib\apimonitor\tools\API Monitor (rohitab.com)'
 
 - name: Create 'UPX' shortcut
   win_shortcut:
-    src: C:\ProgramData\chocolatey\lib\upx\tools\upx-5.1.0-win64\upx.exe
+    src: C:\ProgramData\chocolatey\bin\upx.exe
     dest: C:\Tools\Others\upx.lnk
     description: "Shortcut to UPX"
-    directory: C:\ProgramData\chocolatey\lib\upx\tools\upx-5.1.0-win64  
+
+- name: Create 'FFmpeg' shortcut
+  win_shortcut:
+    src: C:\ProgramData\chocolatey\bin\ffmpeg.exe
+    dest: C:\Tools\Others\ffmpeg.lnk
+    description: "Shortcut to FFmpeg"
 
 - name: Create 'Process Hacker 2' shortcut
   win_shortcut:
     src: 'C:\Program Files\Process Hacker 2\ProcessHacker.exe'
     dest: 'C:\Tools\Others\Process Hacker 2.lnk'
     description: "Shortcut to Process Hacker 2"
-    directory: 'C:\Program Files\Process Hacker 2'
-  
+
 - name: Create 'CFF Explorer' shortcut
   win_shortcut:
     src: 'C:\Program Files\NTCore\Explorer Suite\CFF Explorer.exe'
     dest: 'C:\Tools\Others\CFF Explorer.lnk'
     description: "Shortcut to CFF Explorer"
-    directory: 'C:\Program Files\NTCore\Explorer Suite'
 
 - name: Create 'HxD' shortcut
   win_shortcut:
     src: 'C:\Program Files\HxD\HxD.exe'
     dest: 'C:\Tools\Others\HxD.lnk'
     description: "Shortcut to HxD"
-    directory: 'C:\Program Files\HxD\'
 
 - name: Create 'Resource Hacker' shortcut
   win_shortcut:
     src: 'C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe'
     dest: 'C:\Tools\Others\ResourceHacker.lnk'
     description: "Shortcut to ResourceHacker"
-    directory: 'C:\Program Files (x86)\Resource Hacker'
 
 - name: Create 'RegShot' shortcut
   win_shortcut:
     src: 'C:\ProgramData\chocolatey\lib\RegShot\bin\Regshot-x64-Unicode.exe'
     dest: 'C:\Tools\Others\RegShot.lnk'
     description: "Shortcut to RegShot"
-    directory: 'C:\ProgramData\chocolatey\lib\RegShot\bin'
 
 - name: Create 'CyberChef' shortcut on Desktop
   win_shortcut:
     src: 'C:\ProgramData\chocolatey\lib\cyberchef\tools\CyberChef_v10.19.4.html'
     dest: 'C:\Users\{{ ludus_user_name }}\Desktop\CyberChef.lnk'
     description: "Shortcut to CyberChef"
-    directory: 'C:\ProgramData\chocolatey\lib\cyberchef\tools'
 
 - name: Add 'Tools' shortcut to Desktop
   win_shortcut:
@@ -152,4 +140,3 @@
     src: 'C:\ProgramData\chocolatey\lib\volatility\tools\volatility_2.6_win64_standalone\volatility_2.6_win64_standalone.exe'
     dest: 'C:\Tools\Others\Volatility.lnk'
     description: "Shortcut to Volatility memory analysis tool"
-    directory: 'C:\ProgramData\chocolatey\lib\volatility\tools\volatility_2.6_win64_standalone'

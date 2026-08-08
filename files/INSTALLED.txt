@@ -6,6 +6,7 @@ List of installed chocolatey packages:
 - sysinternals
 - osquery
 - exiftool
+- ffmpeg
 - pebear
 - pestudio
 - pesieve
